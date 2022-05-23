@@ -41,6 +41,12 @@ export function onPointer(
       handler,
       eventOpts
     )
+    if(elem.parentElement) { 
+      elem.parentElement.addEventListener<PointerEventName>(
+        name as PointerEventName,
+        handler,
+        eventOpts) 
+    }
   })
 }
 
@@ -51,5 +57,10 @@ export function destroyPointer(
 ) {
   events[event].split(' ').forEach((name) => {
     ;(elem as HTMLElement).removeEventListener<PointerEventName>(name as PointerEventName, handler)
+    if(elem.parentElement) { 
+      elem.parentElement.addEventListener<PointerEventName>(
+        name as PointerEventName,
+        handler) 
+    }
   })
 }

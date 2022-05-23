@@ -16,3 +16,5 @@ demo/panzoom.js
 !.yarn/sdks
 !.yarn/versions
 package-lock.json
+/panzoom-panzoom-4.4.4.tgz
+/.vs

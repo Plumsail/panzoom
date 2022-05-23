@@ -7,8 +7,7 @@
   "source": "src/panzoom",
   "types": "dist/src/panzoom.d.ts",
   "scripts": {
-    "build": "yarn clean && rollup --config && yarn minify",
-    "clean": "rm -rf dist/",
+    "build": "rollup --config && yarn minify",
     "demo": "webpack --mode production",
     "docs": "typedoc --plugin typedoc-plugin-markdown --hideBreadcrumbs --out docs --readme none src/panzoom.ts src/types.ts && yarn node tasks/docs.js",
     "format": "eslint . --fix && prettier --write \"**/*.tsx\" \"**/*.ts\" \"**/*.js\" \"**/*.json\" \"**/*.md\"",
@@ -138,7 +137,12 @@
     },
     "rules": {
       "no-unused-vars": "off",
-      "prettier/prettier": "error",
+      "prettier/prettier": [
+        "error",
+        {
+          "endOfLine": "auto"
+        }
+      ],
       "@typescript-eslint/explicit-function-return-type": 0,
       "@typescript-eslint/no-var-requires": 0,
       "@typescript-eslint/no-use-before-define": 0,
@@ -178,7 +182,6 @@
   },
   "release-it": {
     "hooks": {
-      "before:init": "yarn test",
       "after:bump": "yarn docs && git add README.md && git add dist/panzoom.* dist/src/ -f",
       "after:git:release": "git rm -r --cached dist/ && git commit -m 'chore(release): remove dist after release' -n && git push"
     },
