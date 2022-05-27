@@ -243,12 +243,7 @@ function Panzoom(
         const transformOriginY = originTransforms[1];
 
         const offsetsY = getTransformOriginOffsets(heightDiff, transformOriginY);
-
-        if(opts.flipPanVertically) {
-            result.y = Math.min(Math.max(result.y, offsetsY.max / toScale), -offsetsY.min / toScale);
-        } else {
-            result.y = Math.max(Math.min(result.y, offsetsY.max / toScale), offsetsY.min / toScale);                        
-        }
+        result.y = Math.max(Math.min(result.y, offsetsY.max / toScale), offsetsY.min / toScale);
     }
 
     if (opts.roundPixels) {

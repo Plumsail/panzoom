@@ -175,12 +175,6 @@ export interface PanOnlyOptions {
    * zooming in when using this option.
    */
   roundPixels?: boolean
-
-  /**
-   * Plumsail Custom Options
-   */
-
-  flipPanVertically?: boolean;
 }
 
 export interface ZoomOnlyOptions {
