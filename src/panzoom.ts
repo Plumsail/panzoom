@@ -334,55 +334,23 @@ function Panzoom(
     originalEvent?: PanzoomEventDetail['originalEvent']
   ) {
     const dims = getDimensions(elem)
+    
+    const currentCenterX = dims.parent.left + dims.parent.width / 2;
+    const currentCenterY = dims.parent.top + dims.parent.height / 2;
 
-    // Instead of thinking of operating on the panzoom element,
-    // think of operating on the area inside the panzoom
-    // element's parent
-    // Subtract padding and border
-    const effectiveArea = {
-      width:
-        dims.parent.width -
-        dims.parent.padding.left -
-        dims.parent.padding.right -
-        dims.parent.border.left -
-        dims.parent.border.right,
-      height:
-        dims.parent.height -
-        dims.parent.padding.top -
-        dims.parent.padding.bottom -
-        dims.parent.border.top -
-        dims.parent.border.bottom
-    }
+    const mousePosToCurrentCenterDistanceX = point.clientX - currentCenterX;
+    const mousePosToCurrentCenterDistanceY = point.clientY - currentCenterY;
 
-    // Adjust the clientX/clientY to ignore the area
-    // outside the effective area
-    let clientX =
-      point.clientX -
-      dims.parent.left -
-      dims.parent.padding.left -
-      dims.parent.border.left -
-      dims.elem.margin.left
-    let clientY =
-      point.clientY -
-      dims.parent.top -
-      dims.parent.padding.top -
-      dims.parent.border.top -
-      dims.elem.margin.top
+    const newCenterX = currentCenterX + mousePosToCurrentCenterDistanceX * toScale;
+    const newCenterY = currentCenterY + mousePosToCurrentCenterDistanceY * toScale;
 
-    // Adjust the clientX/clientY for HTML elements,
-    // because they have a transform-origin of 50% 50%
-    if (!isSVG) {
-      clientX -= dims.elem.width / scale / 2
-      clientY -= dims.elem.height / scale / 2
-    }
+    const offsetX = newCenterX - currentCenterX;
+    const offsetY = newCenterY - currentCenterY;
 
-    // Convert the mouse point from it's position over the
-    // effective area before the scale to the position
-    // over the effective area after the scale.
     const focal = {
-      x: (clientX / effectiveArea.width) * (effectiveArea.width * toScale),
-      y: (clientY / effectiveArea.height) * (effectiveArea.height * toScale)
-    }
+      x: offsetX,
+      y: offsetY
+    };
 
     return zoom(toScale, { ...zoomOptions, animate: false, focal }, originalEvent)
   }
